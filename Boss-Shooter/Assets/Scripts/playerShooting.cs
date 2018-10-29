@@ -52,7 +52,8 @@ public class playerShooting : MonoBehaviour {
 			}
 
 			//fires one bullet, subtracting from the current ammo 
-			useClip.currentClip--;
+			// useClip.currentClip--;
+			// commented to make no reload
 		}
 	}
 }
