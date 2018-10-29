@@ -30,12 +30,12 @@ public class playerShooting : MonoBehaviour {
 	void fire()
 	{
 		//if your current ammo is empty, we try to reload
-		if (useClip.currentClip == 0)
-		{
-			useClip.reload();
-		}
-		else //you can fire if u have ammo in your clip
-		{
+		// if (useClip.currentClip == 0)
+		// {
+		// 	useClip.reload();
+		// }
+		// else //you can fire if u have ammo in your clip
+		// {
 			/*Handles player shooting bullets that checks within a line (hitscan)*/
 			firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
 			mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
@@ -54,6 +54,6 @@ public class playerShooting : MonoBehaviour {
 			//fires one bullet, subtracting from the current ammo 
 			// useClip.currentClip--;
 			// commented to make no reload
-		}
+		// }
 	}
 }
