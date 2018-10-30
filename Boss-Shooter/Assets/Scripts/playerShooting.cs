@@ -11,12 +11,15 @@ public class playerShooting : MonoBehaviour {
 	private RaycastHit2D hit; //the line the bullet will follow
 	private enemyBehavior damaging; //the enemy script to access variables
 	private weaponInfo useClip; //the weapon info script to access variables
+    private Vector2 fireDirection; // the direction that weapon shoots
 
 	// Use this for initialization
 	void Start () {
 
         useClip = firingPoint.GetComponent<weaponInfo>();
 		useClip = firingPoint.GetComponent<weaponInfo>();
+
+        fireDirection = new Vector2(0, 1); // weapon will shoot up
 	}
 	
 	// Update is called once per frame
@@ -37,9 +40,10 @@ public class playerShooting : MonoBehaviour {
 		// {
 			/*Handles player shooting bullets that checks within a line (hitscan)*/
 			firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
-			//mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
-				//Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-			hit = Physics2D.Raycast(firingOrigin, firingOrigin, shootingDistance);
+        //mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
+        //Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+        //Debug.Log(firingOrigin);
+			hit = Physics2D.Raycast(firingOrigin, fireDirection);
         //removed mouse imputs
 
 			//Make sure that the firingOrigin is far from the player gameObject 
