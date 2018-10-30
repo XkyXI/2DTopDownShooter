@@ -321,6 +321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootingDistance: 10000
   firingPoint: {fileID: 1890646881}
+  dps: 10
 --- !u!1 &1817150165
 GameObject:
   m_ObjectHideFlags: 0

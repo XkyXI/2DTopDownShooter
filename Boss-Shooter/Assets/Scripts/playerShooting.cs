@@ -6,7 +6,8 @@ public class playerShooting : MonoBehaviour {
 	[Header("Shooting Number Variables")]
 	public float shootingDistance = 300.0f; //how far the bullet should travel (detect enemy)
 	public Transform firingPoint; //Where the bullet will travel/check from (realistic gun)
-	private Vector2 mousePosition; //position of mouse
+    public int dps = 10; // damage per second
+    private Vector2 mousePosition; //position of mouse
 	private Vector2 firingOrigin; //the (x,y) coordinates of the firingpoint gameObject
 	private RaycastHit2D hit; //the line the bullet will follow
 	private enemyBehavior damaging; //the enemy script to access variables
@@ -24,12 +25,11 @@ public class playerShooting : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-		fire();
+        fire();
         //Always fires
 	}
 
-	void fire()
+    void fire()
 	{
 		//if your current ammo is empty, we try to reload
 		// if (useClip.currentClip == 0)
@@ -52,7 +52,10 @@ public class playerShooting : MonoBehaviour {
 			if (hit && hit.collider.CompareTag("Enemy"))
 			{
 				damaging = hit.collider.GetComponent<enemyBehavior>();
-				damaging.currentHealth--;
+                // Debug.Log(Time.deltaTime);
+
+                damaging.currentHealth -= (Time.deltaTime) * dps; 
+                
 			}
 
 			//fires one bullet, subtracting from the current ammo 

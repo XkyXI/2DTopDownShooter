@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class enemyBehavior : MonoBehaviour {
 	[Header("Enemy Health")]
-	public int startingHealth = 1; //the max health of enemy gameObject
-	public int currentHealth; //current health of the enemy gameObject
+	public float startingHealth = 1f; //the max health of enemy gameObject
+	public float currentHealth; //current health of the enemy gameObject
 
 	// Use this for initialization
 	void Start () {
