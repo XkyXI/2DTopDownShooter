@@ -175,6 +175,11 @@ Prefab:
       propertyPath: m_Name
       value: PlayerNinja
       objectReference: {fileID: 0}
+    - target: {fileID: 114840454145652576, guid: 11e2ba0a11d7a6a45a24d77ff0b2ebf1,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11e2ba0a11d7a6a45a24d77ff0b2ebf1, type: 2}
   m_IsPrefabAsset: 0
@@ -276,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8894bbf428d3677409304bb1ccf8b39c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootingDistance: 300
+  shootingDistance: 10000
   firingPoint: {fileID: 1890646881}
 --- !u!1 &1817150165
 GameObject:
@@ -332,7 +337,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3878040d1d7dd7544941fc2e16846973, type: 3}
+  m_Sprite: {fileID: 21300000, guid: db61501051c9aac41b0e0a48f9f01dca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -372,7 +377,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.4, y: 3.4}
+    oldSize: {x: 2.56, y: 2.56}
     newSize: {x: 3.4, y: 3.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -412,7 +417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50d4a58cef412e84e964dc84665ad5ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 1
+  startingHealth: 100
   currentHealth: 0
 --- !u!1 &1890646880
 GameObject:
