@@ -21,10 +21,9 @@ public class playerShooting : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButton("Fire1"))
-		{
-			fire();
-		}
+		
+		fire();
+        //Always fires
 	}
 
 	void fire()
@@ -38,9 +37,10 @@ public class playerShooting : MonoBehaviour {
 		// {
 			/*Handles player shooting bullets that checks within a line (hitscan)*/
 			firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
-			mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
-				Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-			hit = Physics2D.Raycast(firingOrigin, mousePosition-firingOrigin, shootingDistance);
+			//mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
+				//Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+			hit = Physics2D.Raycast(firingOrigin, firingOrigin, shootingDistance);
+        //removed mouse imputs
 
 			//Make sure that the firingOrigin is far from the player gameObject 
 			//to ensure that the raycast hits the enemies and not collide with the player itself

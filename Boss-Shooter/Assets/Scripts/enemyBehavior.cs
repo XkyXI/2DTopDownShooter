@@ -11,6 +11,7 @@ public class enemyBehavior : MonoBehaviour {
 	void Start () {
 		//initalize the current health to starting health
 		currentHealth = startingHealth; 
+        
 	}
 	
 	// Update is called once per frame
@@ -19,8 +20,10 @@ public class enemyBehavior : MonoBehaviour {
 		if (currentHealth <= 0)
 		{
 			Die();
+
 		}
-	}
+        Debug.Log(currentHealth);
+    }
 
 	void Die()
 	{
