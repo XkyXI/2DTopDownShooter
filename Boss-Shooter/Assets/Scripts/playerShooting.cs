@@ -35,7 +35,6 @@ public class playerShooting : MonoBehaviour {
         spreadDirections[2] = new Vector2(.5f, ((Mathf.Sqrt(3))/2));
 
         firemode = 0;
-    }
 
         SetupLine();
 	}
@@ -65,42 +64,15 @@ public class playerShooting : MonoBehaviour {
 	{
         if (firemode == 0)
         {
-            //if your current ammo is empty, we try to reload
-            // if (useClip.currentClip == 0)
-            // {
-            // 	useClip.reload();
-            // }
-            // else //you can fire if u have ammo in your clip
-            // {
-            /*Handles player shooting bullets that checks within a line (hitscan)*/
             firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
-            //mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
-            //Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-            //Debug.Log(firingOrigin);
             hit = Physics2D.Raycast(firingOrigin, fireDirection);
-            //removed mouse imputs
-
-            //Make sure that the firingOrigin is far from the player gameObject 
-            //to ensure that the raycast hits the enemies and not collide with the player itself
-            //and tag all enemies with the same tag to compare
             Debug.DrawRay(firingOrigin, fireDirection);
 
             if (hit && hit.collider.CompareTag("Enemy"))
             {
                 damaging = hit.collider.GetComponent<enemyBehavior>();
-	{
-		//if your current ammo is empty, we try to reload
-		// if (useClip.currentClip == 0)
-		// {
-		// 	useClip.reload();
-		// }
-		// else //you can fire if u have ammo in your clip
-		// {
-			/*Handles player shooting bullets that checks within a line (hitscan)*/
+            }
 			firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
-        //mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
-        //Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-        //Debug.Log(firingOrigin);
 
 			hit = Physics2D.Raycast(firingOrigin, fireDirection);
             Vector2 endPosition = firingOrigin + ( shootingDistance * fireDirection );
@@ -112,12 +84,6 @@ public class playerShooting : MonoBehaviour {
             laserLineRenderer.SetPosition(0, firingOrigin);
             laserLineRenderer.SetPosition(1, endPosition);
 
-            // Debug.DrawRay(firingOrigin, fireDirection, Color.green);
-        //removed mouse imputs
-
-			//Make sure that the firingOrigin is far from the player gameObject 
-			//to ensure that the raycast hits the enemies and not collide with the player itself
-			//and tag all enemies with the same tag to compare
 			if (hit && hit.collider.CompareTag("Enemy"))
 			{
 				damaging = hit.collider.GetComponent<enemyBehavior>();
@@ -126,11 +92,6 @@ public class playerShooting : MonoBehaviour {
                 damaging.currentHealth -= (Time.deltaTime) * dps;
 
             }
-
-            //fires one bullet, subtracting from the current ammo 
-            // useClip.currentClip--;
-            // commented to make no reload
-            // }
 
         }
     if (firemode == 1)
