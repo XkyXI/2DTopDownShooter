@@ -14,7 +14,7 @@ public class enemyBehavior : MonoBehaviour {
     void Start () {
 		//initalize the current health to starting health
 		currentHealth = startingHealth;
-        healthText.text = (currentHealth / startingHealth * 100).ToString() + "%";
+        healthText.text = (currentHealth / startingHealth).ToString() + "%";
         healthBar.fillAmount = currentHealth / startingHealth;
     }
 	
@@ -22,7 +22,7 @@ public class enemyBehavior : MonoBehaviour {
 	void Update () {
         //if current health is 0, this object should die
         healthText.text = (currentHealth).ToString() + "%";
-        healthBar.fillAmount = currentHealth;
+        healthBar.fillAmount = currentHealth / startingHealth;
         if (currentHealth <= 0)
 		{
             healthText.text = 0.ToString() + "%";
