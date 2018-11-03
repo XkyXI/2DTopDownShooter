@@ -46,6 +46,8 @@ public class playerShooting : MonoBehaviour {
         if (Input.GetButtonDown("Switch"))
         {
             firemode = (firemode + 1) % 2;
+            laserLineRenderer.enabled = !laserLineRenderer.enabled;
+
         }
         //Debug.Log(firemode);
     }
@@ -57,6 +59,7 @@ public class playerShooting : MonoBehaviour {
         laserLineRenderer.SetVertexCount(2);
         laserLineRenderer.SetWidth(0.1f, 0.1f);
         laserLineRenderer.useWorldSpace = true;
+        laserLineRenderer.enabled = true;
         laserLineRenderer.material.color = Color.white;
     }
 
@@ -64,57 +67,57 @@ public class playerShooting : MonoBehaviour {
 	{
         if (firemode == 0)
         {
-            firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
-            hit = Physics2D.Raycast(firingOrigin, fireDirection);
-            Debug.DrawRay(firingOrigin, fireDirection);
+            straightShotMode();
+        }
+        if (firemode == 1)
+        {
+            spreadShotMode();
+        }
+	}
 
+    void straightShotMode () {
+        // Debug.DrawRay(firingOrigin, fireDirection);
+
+        firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
+
+        hit = Physics2D.Raycast(firingOrigin, fireDirection);
+        Vector2 endPosition = firingOrigin + ( shootingDistance * fireDirection );
+
+        if (hit) {
+            endPosition = hit.point;
+        }
+
+        laserLineRenderer.SetPosition(0, firingOrigin);
+        laserLineRenderer.SetPosition(1, endPosition);
+
+        if (hit && hit.collider.CompareTag("Enemy"))
+        {
+            damaging = hit.collider.GetComponent<enemyBehavior>();
+            // Debug.Log(Time.deltaTime);
+
+            damaging.currentHealth -= (Time.deltaTime) * dps;
+
+        }
+    }
+
+    void spreadShotMode () {
+        firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
+
+        for (int i = 0; i < spreadHits.Length; i++)
+        {
+            spreadHits[i] = Physics2D.Raycast(firingOrigin, spreadDirections[i], 5);
+            hit = spreadHits[i];
+            Debug.DrawRay(firingOrigin, spreadDirections[i]);
             if (hit && hit.collider.CompareTag("Enemy"))
             {
                 damaging = hit.collider.GetComponent<enemyBehavior>();
-            }
-			firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
-
-			hit = Physics2D.Raycast(firingOrigin, fireDirection);
-            Vector2 endPosition = firingOrigin + ( shootingDistance * fireDirection );
-
-            if (hit) {
-                endPosition = hit.point;
-            }
-
-            laserLineRenderer.SetPosition(0, firingOrigin);
-            laserLineRenderer.SetPosition(1, endPosition);
-
-			if (hit && hit.collider.CompareTag("Enemy"))
-			{
-				damaging = hit.collider.GetComponent<enemyBehavior>();
                 // Debug.Log(Time.deltaTime);
+                Debug.Log("weapon: " + i + " hit");
 
                 damaging.currentHealth -= (Time.deltaTime) * dps;
 
             }
-
         }
-    if (firemode == 1)
-        {
-            firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
 
-
-            for (int i = 0; i < spreadHits.Length; i++)
-            {
-                spreadHits[i] = Physics2D.Raycast(firingOrigin, spreadDirections[i], 5);
-                hit = spreadHits[i];
-                Debug.DrawRay(firingOrigin, spreadDirections[i]);
-                if (hit && hit.collider.CompareTag("Enemy"))
-                {
-                    damaging = hit.collider.GetComponent<enemyBehavior>();
-                    // Debug.Log(Time.deltaTime);
-                    Debug.Log("weapon: " + i + " hit");
-
-                    damaging.currentHealth -= (Time.deltaTime) * dps;
-
-                }
-            }
-        }
-	}
-
+    }
 }
