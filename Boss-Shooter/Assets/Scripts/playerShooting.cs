@@ -18,6 +18,9 @@ public class playerShooting : MonoBehaviour {
     public int firemode = 0; //Different firing modes
 
     public LineRenderer[] lineRenderers;
+
+    public float firerate = .5f;
+    private float lastShot = 0.0f;
     
 	// Use this for initialization
 	void Start () {
@@ -51,7 +54,11 @@ public class playerShooting : MonoBehaviour {
             changeRenderer();
         }
 
-        fire();
+        //if (Time.time > firerate + lastShot)
+        //{
+            fire();
+            //lastShot = Time.time;
+        //}
         //Debug.Log(firemode);
     }
 
@@ -103,7 +110,7 @@ public class playerShooting : MonoBehaviour {
             // Debug.Log(Time.deltaTime);
 
             damaging.currentHealth -= (Time.deltaTime) * dps;
-
+            //damaging.currentHealth -= 1;
         }
     }
 
