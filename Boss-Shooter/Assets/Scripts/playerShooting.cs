@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class playerShooting : MonoBehaviour {
 	[Header("Shooting Number Variables")]
-	public float shootingDistance = 300.0f; //how far the bullet should travel (detect enemy)
+	public float shootingDistance = 5f; //how far the bullet should travel (detect enemy)
 	public Transform firingPoint; //Where the bullet will travel/check from (realistic gun)
     public int dps = 10; // damage per second
     private Vector2 mousePosition; //position of mouse
@@ -17,8 +17,8 @@ public class playerShooting : MonoBehaviour {
     private Vector2 fireDirection; // the direction that weapon shoots
     public int firemode = 0; //Different firing modes
 
-    public LineRenderer laserLineRenderer;
-
+    public LineRenderer[] lineRenderers;
+    
 	// Use this for initialization
 	void Start () {
 
@@ -36,38 +36,54 @@ public class playerShooting : MonoBehaviour {
 
         firemode = 0;
 
-        SetupLine();
+        // lineRenderers = new LineRenderer[3];
+        SetupRenderer(lineRenderers[0]);
+        SetupRenderer(lineRenderers[1]);
+        SetupRenderer(lineRenderers[2]);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        fire();
 
         if (Input.GetButtonDown("Switch"))
         {
             firemode = (firemode + 1) % 2;
-            laserLineRenderer.enabled = !laserLineRenderer.enabled;
-
+            changeRenderer();
         }
+
+        fire();
         //Debug.Log(firemode);
     }
 
-    void SetupLine()
+    void changeRenderer () {
+        if (firemode == 0) {
+            lineRenderers[0].enabled = false;
+            lineRenderers[2].enabled = false;
+        }
+        if (firemode == 1) {
+            lineRenderers[0].enabled = true;
+            lineRenderers[2].enabled = true;
+        }
+    }
+
+    void SetupRenderer(LineRenderer renderer)
     {
-        laserLineRenderer.sortingLayerName = "OnTop";
-        laserLineRenderer.sortingOrder = 5;
-        laserLineRenderer.SetVertexCount(2);
-        laserLineRenderer.SetWidth(0.1f, 0.1f);
-        laserLineRenderer.useWorldSpace = true;
-        laserLineRenderer.enabled = true;
-        laserLineRenderer.material.color = Color.white;
+        renderer.sortingLayerName = "OnTop";
+        renderer.sortingOrder = 5;
+        renderer.SetVertexCount(2);
+        renderer.SetWidth(0.1f, 0.1f);
+        renderer.useWorldSpace = true;
+        renderer.enabled = true;
+        renderer.material.color = Color.white;
     }
 
     void fire()
 	{
+        firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
+
         if (firemode == 0)
         {
-            straightShotMode();
+            straightShotMode(300f);
         }
         if (firemode == 1)
         {
@@ -75,20 +91,11 @@ public class playerShooting : MonoBehaviour {
         }
 	}
 
-    void straightShotMode () {
+    void straightShotMode (float distance) {
         // Debug.DrawRay(firingOrigin, fireDirection);
 
-        firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
-
         hit = Physics2D.Raycast(firingOrigin, fireDirection);
-        Vector2 endPosition = firingOrigin + ( shootingDistance * fireDirection );
-
-        if (hit) {
-            endPosition = hit.point;
-        }
-
-        laserLineRenderer.SetPosition(0, firingOrigin);
-        laserLineRenderer.SetPosition(1, endPosition);
+        updateRendererPosititions(lineRenderers[1], hit, fireDirection, distance);
 
         if (hit && hit.collider.CompareTag("Enemy"))
         {
@@ -101,13 +108,12 @@ public class playerShooting : MonoBehaviour {
     }
 
     void spreadShotMode () {
-        firingOrigin = new Vector2(firingPoint.position.x, firingPoint.position.y);
-
         for (int i = 0; i < spreadHits.Length; i++)
         {
-            spreadHits[i] = Physics2D.Raycast(firingOrigin, spreadDirections[i], 5);
+            spreadHits[i] = Physics2D.Raycast(firingOrigin, spreadDirections[i], shootingDistance);
             hit = spreadHits[i];
-            Debug.DrawRay(firingOrigin, spreadDirections[i]);
+            // Debug.DrawRay(firingOrigin, spreadDirections[i]);
+            updateRendererPosititions(lineRenderers[i], spreadHits[i], spreadDirections[i], shootingDistance);
             if (hit && hit.collider.CompareTag("Enemy"))
             {
                 damaging = hit.collider.GetComponent<enemyBehavior>();
@@ -118,6 +124,16 @@ public class playerShooting : MonoBehaviour {
 
             }
         }
+    }
 
+    void updateRendererPosititions (LineRenderer renderer, RaycastHit2D hit, Vector2 direction, float distance) {
+        Vector2 endPosition = firingOrigin + ( distance * direction );
+
+        if (hit) {
+            endPosition = hit.point;
+        }
+
+        renderer.SetPosition(0, firingOrigin);
+        renderer.SetPosition(1, endPosition);
     }
 }
