@@ -21,11 +21,9 @@ public class BossFiring : MonoBehaviour
         {
             Debug.Log("Fired");
             GameObject Clone;
-
+            
             Clone = (Instantiate(bulletprefab, transform.position, transform.rotation)) as GameObject;
-
             Destroy(Clone, 1);
-
         }
     }
 }
