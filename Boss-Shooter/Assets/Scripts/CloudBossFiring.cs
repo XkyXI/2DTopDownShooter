@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossFiring : MonoBehaviour
+public class CloudBossFiring : MonoBehaviour
 {
 
     public GameObject bulletprefab;
@@ -13,11 +13,15 @@ public class BossFiring : MonoBehaviour
     public GameObject BurstBombprefab;
     public GameObject Crazyshotprefab;
     public int test;
-    private float AttackDelay; 
+    private int phase;
+    private float AttackDelay;
+    private float AttackDelay2;
+    private int limit;
+    private int limit2;
     private List<int> AttackQueue = new List<int>();
     private int attack;
     private Rigidbody2D BulletRB;
-    private int testfire;
+    private bool testfire;
     private int sliderrandom;
 
 
@@ -26,9 +30,11 @@ public class BossFiring : MonoBehaviour
     {
 
 
-        testfire = 0;
-     
-        
+        testfire = false;
+
+        phase = 0;
+
+
     }
 
     // Update is called once per frame
@@ -36,34 +42,39 @@ public class BossFiring : MonoBehaviour
     {
         if (Input.GetButtonDown("test_fire"))
         {
-            testfire = (testfire + 1) % 2;
+            testfire = !testfire;
+
+            AttackDelay = 0;
+
+            limit2 = 0;
 
         }
 
 
-        if (AttackDelay >= 2)
+        if (AttackDelay >= 3)
         {
-            if (testfire == 0)
+            if (testfire == false)
 
             {
-                attack = Random.Range(0, 2);
+                attack = Random.Range(0, 3);
 
                 //Debug.Log(attack);
 
                 if (attack == 0)
                     StraightShot();
+                    AttackDelay = 1;
 
                 if (attack == 1)
+                    StraightShot();
+                    AttackDelay = 1;
+
+                if (attack == 2)
                     SpreadShot();
-
-                AttackDelay = 0;
-
-                
-
+                    AttackDelay = 1;
             }
         }
 
-        if (testfire == 1)
+        if (testfire == true)
         {
             if (Input.GetButtonDown("test1"))
             {
@@ -77,15 +88,18 @@ public class BossFiring : MonoBehaviour
 
             if (Input.GetButtonDown("test3"))
             {
-                SlideShotR();
+                StraightShot();
 
-                SlideShotR();
+                AttackDelay2 = 0;
 
-                SlideShotR();
+                limit2 = 0;
 
-                SlideShotR();
+                if (AttackDelay2 >= .25 && limit == 0)
+                {
+                    StraightShot();
 
-                SlideShotR();
+                    limit2 = 1;
+                }
             }
 
             if (Input.GetButtonDown("test4"))
@@ -101,6 +115,7 @@ public class BossFiring : MonoBehaviour
         }
 
         AttackDelay += 1 * Time.deltaTime;
+        AttackDelay2 += 1 * Time.deltaTime;
 
 
     }
@@ -112,7 +127,19 @@ public class BossFiring : MonoBehaviour
 
         Bullet = (Instantiate(bulletprefab, transform.position, transform.rotation)) as GameObject;
 
-        
+        GameObject Bullet2;
+
+        Bullet2 = (Instantiate(bulletprefab, transform.position, transform.rotation)) as GameObject;
+
+        Bullet2.GetComponent<Rigidbody2D>().transform.Translate(new Vector3(1, 0, 0));
+
+        GameObject Bullet3;
+
+        Bullet3 = (Instantiate(bulletprefab, transform.position, transform.rotation)) as GameObject;
+
+        Bullet3.GetComponent<Rigidbody2D>().transform.Translate(new Vector3(-1, 0, 0));
+
+
 
 
         //Bullet.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, bullet_speed*Time.deltaTime));
@@ -122,7 +149,11 @@ public class BossFiring : MonoBehaviour
         //Rigidbody Bullet = (Rigidbody)Instantiate(bulletprefab, transform.position + transform.forward, transform.rotation);
         //Bullet.GetComponent<Rigidbody2D>().AddForce(transform.forward * bullet_speed, ForceMode2D.Impulse);
 
-        Destroy(Bullet, 3);
+        Destroy(Bullet, 1);
+
+        Destroy(Bullet2, 1);
+
+        Destroy(Bullet3, 1);
     }
 
     void SpreadShot()
@@ -133,15 +164,15 @@ public class BossFiring : MonoBehaviour
 
         Spread1 = (Instantiate(spread1prefab, transform.position, transform.rotation)) as GameObject;
 
-        Destroy(Spread1, 3);
+        Destroy(Spread1, 2);
 
         Spread2 = (Instantiate(spread2prefab, transform.position, transform.rotation)) as GameObject;
 
-        Destroy(Spread2, 3);
+        Destroy(Spread2, 2);
 
         Spread3 = (Instantiate(spread3prefab, transform.position, transform.rotation)) as GameObject;
 
-        Destroy(Spread3, 3);
+        Destroy(Spread3, 2);
 
     }
 
